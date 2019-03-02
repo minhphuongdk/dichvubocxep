@@ -1,0 +1,16 @@
+[06-Dec-2018 10:11:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function add_action() in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/template-tags.php:196
+Stack trace:
+#0 {main}
+  thrown in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/template-tags.php on line 196
+[06-Dec-2018 14:24:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function add_action() in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/template-tags.php:196
+Stack trace:
+#0 {main}
+  thrown in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/template-tags.php on line 196
+[07-Dec-2018 00:52:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function add_action() in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/icon-functions.php:22
+Stack trace:
+#0 {main}
+  thrown in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/icon-functions.php on line 22
+[07-Dec-2018 05:44:01 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function add_action() in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/icon-functions.php:22
+Stack trace:
+#0 {main}
+  thrown in /home/gualrmskwivn/public_html/wp-content/themes/twentyseventeen/inc/icon-functions.php on line 22
