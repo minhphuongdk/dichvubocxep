@@ -1,89 +1,136 @@
 <?php
 /**
- * Cấu hình cơ bản cho WordPress
+ * The base configurations of the WordPress.
  *
- * Trong quá trình cài đặt, file "wp-config.php" sẽ được tạo dựa trên nội dung 
- * mẫu của file này. Bạn không bắt buộc phải sử dụng giao diện web để cài đặt, 
- * chỉ cần lưu file này lại với tên "wp-config.php" và điền các thông tin cần thiết.
+ * This file has the following configurations: MySQL settings, Table Prefix,
+ * Secret Keys, WordPress Language, and ABSPATH. You can find more information
+ * by visiting {@link http://codex.wordpress.org/Editing_wp-config.php Editing
+ * wp-config.php} Codex page. You can get the MySQL settings from your web host.
  *
- * File này chứa các thiết lập sau:
- *
- * * Thiết lập MySQL
- * * Các khóa bí mật
- * * Tiền tố cho các bảng database
- * * ABSPATH
- *
- * @link https://codex.wordpress.org/Editing_wp-config.php
+ * This file is used by the wp-config.php creation script during the
+ * installation. You don't have to use the web site, you can just copy this file
+ * to "wp-config.php" and fill in the values.
  *
  * @package WordPress
  */
 
-// ** Thiết lập MySQL - Bạn có thể lấy các thông tin này từ host/server ** //
-/** Tên database MySQL */
-define('DB_NAME', 'ten_database');
+require_once(__DIR__ . '/../vendor/autoload.php');
+// (new \Dotenv\Dotenv(__DIR__.'/../'))->load();
 
-/** Username của database */
-define('DB_USER', 'username');
+if ( file_exists( dirname( __FILE__ ) . '/local-config.php' ) ) {
 
-/** Mật khẩu của database */
-define('DB_PASSWORD', 'mat_khau');
+	/** Declare Dev-mode for WordPress */
+	define( 'WP_LOCAL_DEV', true );
 
-/** Hostname của database */
-define('DB_HOST', 'localhost');
+	/** Include config for dev environment */
+	include( dirname( __FILE__ ) . '/local-config.php' );
 
-/** Database charset sử dụng để tạo bảng database. */
-define('DB_CHARSET', 'utf8');
+} else {
 
-/** Kiểu database collate. Đừng thay đổi nếu không hiểu rõ. */
-define('DB_COLLATE', '');
+	$url = parse_url(getenv("mysql://b54d18d388f6b6:252b9a7f@eu-cdbr-west-02.cleardb.net/heroku_e21ce89808e3810?reconnect=true"));
+
+	/** The name of the database for WordPress */
+	define("DB_NAME", trim($url["dichvubocxep"]));
+
+	/** MySQL database username */
+	define("DB_USER", trim($url["b54d18d388f6b6"]));
+
+	/** MySQL database password */
+	define("DB_PASSWORD", trim($url["252b9a7f"]));
+
+	/** MySQL hostname */
+	define("DB_HOST", trim($url["eu-cdbr-west-02.cleardb.net"]));
+
+	/** MySQL database port  */
+	// define("DB_PORT", trim($url["port"]));
+
+	/** Database Charset to use in creating database tables. */
+	define("DB_CHARSET", "utf8");
+
+	/** Allows both foobar.com and foobar.herokuapp.com to load media assets correctly. Also adds /wp/ to give WordPress its own directory. */
+	define("WP_SITEURL", "http://" . $_SERVER["HTTP_HOST"] . "/wp/");
+	define("WP_HOME", "http://" . $_SERVER["HTTP_HOST"]);
+
+	define("FORCE_SSL_LOGIN", getenv("FORCE_SSL_LOGIN") == "true");
+	define("FORCE_SSL_ADMIN", getenv("FORCE_SSL_ADMIN") == "true");
+	if ($_SERVER["HTTP_X_FORWARDED_PROTO"] == "https")
+	  $_SERVER["HTTPS"] = "on";
+
+	/** Enable the WordPress Object Cache */
+	define("WP_CACHE", getenv("WP_CACHE") == "true");
+
+	/** Disable the built-in cron job */
+	define("DISABLE_WP_CRON", getenv("DISABLE_WP_CRON") == "true");
+
+	/** Disable automatic updates, they won't survive restarting and scaling dynos */
+	define("AUTOMATIC_UPDATER_DISABLED", true );
+
+	/**  Prevent File Modifications */
+	define ("DISALLOW_FILE_EDIT", true );
+
+	/**  Prevent installation of themes or plugins */
+	define("DISALLOW_FILE_MODS", true );
+
+	/** For developers: WordPress debugging mode. */
+	define("WP_DEBUG", getenv("WP_DEBUG") == "true");
+
+}
+
+/** The Database Collate type. Don't change this if in doubt. */
+define("DB_COLLATE", "");
 
 /**#@+
- * Khóa xác thực và salt.
+ * Authentication Unique Keys and Salts.
  *
- * Thay đổi các giá trị dưới đây thành các khóa không trùng nhau!
- * Bạn có thể tạo ra các khóa này bằng công cụ
- * {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
- * Bạn có thể thay đổi chúng bất cứ lúc nào để vô hiệu hóa tất cả
- * các cookie hiện có. Điều này sẽ buộc tất cả người dùng phải đăng nhập lại.
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
  *
  * @since 2.6.0
  */
-define('AUTH_KEY',         'khóa không trùng nhau');
-define('SECURE_AUTH_KEY',  'khóa không trùng nhau');
-define('LOGGED_IN_KEY',    'khóa không trùng nhau');
-define('NONCE_KEY',        'khóa không trùng nhau');
-define('AUTH_SALT',        'khóa không trùng nhau');
-define('SECURE_AUTH_SALT', 'khóa không trùng nhau');
-define('LOGGED_IN_SALT',   'khóa không trùng nhau');
-define('NONCE_SALT',       'khóa không trùng nhau');
+define('AUTH_KEY',         'put your unique phrase here');
+define('SECURE_AUTH_KEY',  'put your unique phrase here');
+define('LOGGED_IN_KEY',    'put your unique phrase here');
+define('NONCE_KEY',        'put your unique phrase here');
+define('AUTH_SALT',        'put your unique phrase here');
+define('SECURE_AUTH_SALT', 'put your unique phrase here');
+define('LOGGED_IN_SALT',   'put your unique phrase here');
+define('NONCE_SALT',       'put your unique phrase here');
 
 /**#@-*/
 
 /**
- * Tiền tố cho bảng database.
+ * WordPress Database Table prefix.
  *
- * Đặt tiền tố cho bảng giúp bạn có thể cài nhiều site WordPress vào cùng một database.
- * Chỉ sử dụng số, ký tự và dấu gạch dưới!
+ * You can have multiple installations in one database if you give each a unique
+ * prefix. Only numbers, letters, and underscores please!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = "wp_";
 
 /**
- * Dành cho developer: Chế độ debug.
+ * WordPress Localized Language, defaults to English.
  *
- * Thay đổi hằng số này thành true sẽ làm hiện lên các thông báo trong quá trình phát triển.
- * Chúng tôi khuyến cáo các developer sử dụng WP_DEBUG trong quá trình phát triển plugin và theme.
- *
- * Để có thông tin về các hằng số khác có thể sử dụng khi debug, hãy xem tại Codex.
- *
- * @link https://codex.wordpress.org/Debugging_in_WordPress
+ * Change this to localize WordPress. A corresponding MO file for the chosen
+ * language must be installed to wp-content/languages. For example, install
+ * de_DE.mo to wp-content/languages and set WPLANG to "de_DE" to enable German
+ * language support.
  */
-define('WP_DEBUG', false);
+define("WPLANG", "");
 
-/* Đó là tất cả thiết lập, ngưng sửa từ phần này trở xuống. Chúc bạn viết blog vui vẻ. */
+/**
+ * AWS Plugin Auth Keys
+ */
+define( "AWS_ACCESS_KEY_ID", getenv("AWS_ACCESS_KEY_ID") );
+define( "AWS_SECRET_ACCESS_KEY", getenv("AWS_SECRET_ACCESS_KEY") );
 
-/** Đường dẫn tuyệt đối đến thư mục cài đặt WordPress. */
-if ( !defined('ABSPATH') )
-	define('ABSPATH', dirname(__FILE__) . '/');
+/* That"s all, stop editing! Happy blogging. */
 
-/** Thiết lập biến và include file. */
-require_once(ABSPATH . 'wp-settings.php');
+define( "WP_CONTENT_DIR", $_SERVER['DOCUMENT_ROOT'] . "/content" );
+define( "WP_CONTENT_URL", "http://" . $_SERVER['HTTP_HOST'] . "/content" );
+
+/** Absolute path to the WordPress directory. */
+if ( !defined("ABSPATH") )
+  define("ABSPATH", dirname(__FILE__) . "/");
+
+/** Sets up WordPress vars and included files. */
+require_once(ABSPATH . "wp-settings.php");
